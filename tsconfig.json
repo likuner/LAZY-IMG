@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "declaration": true,
+    "outDir": "./lib",
+    "rootDir": "./src/web-components",
+    "importHelpers": false,
+    "strict": false,
+    "allowJs": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib"
+  ],
+  "include": ["src/web-components"]
+}
