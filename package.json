@@ -8,7 +8,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "tsc": "rm -rf dest && tsc && cp ./src/web-components/package.json ./dest/package.json"
+    "tsc": "rm -rf dest && tsc && cp ./src/web-components/package.json ./dest/package.json && cp ./src/web-components/README.md ./dest/README.md"
   },
   "dependencies": {
     "core-js": "^3.6.5",
