@@ -2,7 +2,6 @@
   "name": "lazy-img",
   "version": "1.0.0",
   "description": "lazy image loading based on web components",
-  "private": true,
   "main": "index.js",
   "scripts": {},
   "keywords": [
