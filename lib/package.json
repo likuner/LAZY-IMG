@@ -12,5 +12,8 @@
     "web-components"
   ],
   "author": "likun(273676636@qq.com)",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }

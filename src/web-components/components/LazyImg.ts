@@ -1,3 +1,4 @@
+import { throttle } from 'lodash'
 
 class LazyImg extends HTMLElement {
   private shadow: ShadowRoot = null;
@@ -6,7 +7,7 @@ class LazyImg extends HTMLElement {
 
   constructor() {
     super()
-    this.shadow = this.attachShadow({ mode: 'closed' })
+    this.shadow = this.attachShadow({ mode: 'open' })
     this.img = document.createElement('img') as HTMLImageElement
     this.shadow.appendChild(this.img)
   }
@@ -16,29 +17,38 @@ class LazyImg extends HTMLElement {
   ]
   
   attributeChangedCallback(name, oldVal, newVal) {
-    console.log('attributeChangedCallback:', name, oldVal, newVal)
-    // oldVal !== newVal && this.img.setAttribute(name, newVal)
+    console.log('lazy-img-attributeChangedCallback:', name, oldVal, newVal)
+    if(oldVal !== newVal) {
+      if(name === 'src') {
+        this.loaded && this.img.setAttribute(name, newVal)
+      } else {
+        this.img.setAttribute(name, newVal)
+      }
+    }
   }
   
   connectedCallback() {
     this.style.cssText = [
       'display: inline-block',
-      'background: #f5f7fa',
+      'background: #F5F7FA'
     ].join('; ')
-    this.img.setAttribute('width', this.hasAttribute('width') ? this.getAttribute('width') : '200')
+    this.img.setAttribute('width', this.hasAttribute('width') ? this.getAttribute('width') : '300')
     this.img.setAttribute('height', this.hasAttribute('height') ? this.getAttribute('height') : '200')
-    window.onscroll = () => {
-      const { top } = this.getBoundingClientRect()
-      console.log("LazyImg -> window.onscroll -> rect", top)
-      if(!this.loaded && top < window.innerHeight - 200) {
-        this.img.setAttribute('src', this.getAttribute('src'))
-        this.loaded = true
-        window.onscroll = null
-      }
-    }
+    this.setImgSrc()
+    window.onscroll = throttle(this.setImgSrc, 200)
   }
 
   disconnectedCallback() {}
+
+  setImgSrc = () => {
+    if(this.loaded) return
+    const { top } = this.getBoundingClientRect()
+    if(top < window.innerHeight) {
+      this.img.setAttribute('src', this.getAttribute('src'))
+      this.loaded = true
+      window.onscroll = null
+    }
+  }
   
 }
 
