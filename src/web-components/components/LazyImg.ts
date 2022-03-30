@@ -17,7 +17,7 @@ class LazyImg extends HTMLElement {
   ]
   
   attributeChangedCallback(name, oldVal, newVal) {
-    console.log('lazy-img-attributeChangedCallback:', name, oldVal, newVal)
+    console.log('lazy-img-change', name, oldVal, newVal)
     if(oldVal !== newVal) {
       if(name === 'src') {
         this.loaded && this.img.setAttribute(name, newVal)
@@ -45,6 +45,7 @@ class LazyImg extends HTMLElement {
     const { top } = this.getBoundingClientRect()
     if(top < window.innerHeight) {
       this.img.setAttribute('src', this.getAttribute('src'))
+      console.log('lazy-img-loaded')
       this.loaded = true
       window.onscroll = null
     }
