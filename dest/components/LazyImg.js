@@ -4,8 +4,6 @@ const lodash_1 = require("lodash");
 class LazyImg extends HTMLElement {
     constructor() {
         super();
-        this.shadow = null;
-        this.img = null;
         this.loaded = false;
         this.setImgSrc = () => {
             if (this.loaded)
@@ -20,10 +18,18 @@ class LazyImg extends HTMLElement {
         };
         this.shadow = this.attachShadow({ mode: 'open' });
         this.img = document.createElement('img');
+        this.shadow.innerHTML = `
+      <style>
+        :host{
+          display: inline-block;
+          background: #F5F7FA;
+        }
+      </style>
+    `;
         this.shadow.appendChild(this.img);
     }
     attributeChangedCallback(name, oldVal, newVal) {
-        console.log('lazy-img-change', name, oldVal, newVal);
+        console.log('lazy-img-changed', name, oldVal, newVal);
         if (oldVal !== newVal) {
             if (name === 'src') {
                 this.loaded && this.img.setAttribute(name, newVal);
@@ -34,10 +40,6 @@ class LazyImg extends HTMLElement {
         }
     }
     connectedCallback() {
-        this.style.cssText = [
-            'display: inline-block',
-            'background: #F5F7FA'
-        ].join('; ');
         this.img.setAttribute('width', this.hasAttribute('width') ? this.getAttribute('width') : '300');
         this.img.setAttribute('height', this.hasAttribute('height') ? this.getAttribute('height') : '200');
         this.setImgSrc();
@@ -45,7 +47,5 @@ class LazyImg extends HTMLElement {
     }
     disconnectedCallback() { }
 }
-LazyImg.observedAttributes = [
-    'src', 'width', 'height'
-];
+LazyImg.observedAttributes = ['src', 'width', 'height'];
 exports.default = LazyImg;

@@ -11,6 +11,7 @@
     "tsc": "rm -rf dest && tsc && cp ./src/web-components/package.json ./dest/package.json && cp ./src/web-components/README.md ./dest/README.md"
   },
   "dependencies": {
+    "@likun./lazy-img": "^1.0.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"

@@ -1,23 +1,29 @@
 import { throttle } from 'lodash'
 
 class LazyImg extends HTMLElement {
-  private shadow: ShadowRoot = null;
-  private img: HTMLImageElement = null;
+  private shadow: ShadowRoot;
+  private img: HTMLImageElement;
   private loaded: boolean = false;
 
   constructor() {
     super()
     this.shadow = this.attachShadow({ mode: 'open' })
-    this.img = document.createElement('img') as HTMLImageElement
+    this.img = document.createElement('img')
+    this.shadow.innerHTML = `
+      <style>
+        :host{
+          display: inline-block;
+          background: #F5F7FA;
+        }
+      </style>
+    `
     this.shadow.appendChild(this.img)
   }
 
-  static observedAttributes = [
-    'src', 'width', 'height'
-  ]
+  static observedAttributes = ['src', 'width', 'height']
   
   attributeChangedCallback(name, oldVal, newVal) {
-    console.log('lazy-img-change', name, oldVal, newVal)
+    console.log('lazy-img-changed', name, oldVal, newVal)
     if(oldVal !== newVal) {
       if(name === 'src') {
         this.loaded && this.img.setAttribute(name, newVal)
@@ -28,10 +34,6 @@ class LazyImg extends HTMLElement {
   }
   
   connectedCallback() {
-    this.style.cssText = [
-      'display: inline-block',
-      'background: #F5F7FA'
-    ].join('; ')
     this.img.setAttribute('width', this.hasAttribute('width') ? this.getAttribute('width') : '300')
     this.img.setAttribute('height', this.hasAttribute('height') ? this.getAttribute('height') : '200')
     this.setImgSrc()
