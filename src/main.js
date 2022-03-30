@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import '../lib/index.js'
+import '../dest/index.js'
 // import '/usr/local/lib/node_modules/lazy-img'
 
 Vue.config.productionTip = false

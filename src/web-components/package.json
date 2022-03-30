@@ -1,5 +1,5 @@
 {
-  "name": "lazy-img",
+  "name": "@likun./lazy-img",
   "version": "1.0.0",
   "description": "lazy image loading based on web components",
   "main": "index.js",

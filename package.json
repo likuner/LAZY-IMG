@@ -2,13 +2,13 @@
   "name": "lazy-img",
   "version": "1.0.0",
   "private": true,
-  "main": "./lib/index.js",
+  "main": "./dest/index.js",
   "scripts": {
     "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "tsc": "rm -rf lib && tsc && cp ./src/web-components/package.json ./lib/package.json"
+    "tsc": "rm -rf dest && tsc && cp ./src/web-components/package.json ./dest/package.json"
   },
   "dependencies": {
     "core-js": "^3.6.5",
