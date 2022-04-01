@@ -1,7 +1,7 @@
 # Introduction
 `lazy-img`
 
-- a component of lazy image loading based on web components.
+- a custom element of lazy image loading based on web components.
 - It can be used in both Vue and React.
 # Download
 ## yarn

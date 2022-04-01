@@ -1,7 +1,7 @@
 {
   "name": "@likun./lazy-img",
-  "version": "1.0.3",
-  "description": "A custom element of image-lazy-loading based on web-components",
+  "version": "1.0.4",
+  "description": "custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
     "build": "rm -rf dest && tsc && cp ./src/web-components/package.json ./dest/package.json && cp ./src/web-components/README.md ./dest/README.md"
