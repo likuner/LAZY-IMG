@@ -1,22 +1,27 @@
-# lazy-demo
+# Introduction
+`lazy-img`
 
-## Project setup
+- a component of lazy image loading based on web components.
+- It can be used in both Vue and React.
+# Download
+## yarn
 ```
-npm install
+yarn add @likun./lazy-img
 ```
-
-### Compiles and hot-reloads for development
+## npm
 ```
-npm run serve
+npm install @likun./lazy-img
 ```
-
-### Compiles and minifies for production
+# Usage
+## import package
 ```
-npm run build
+import '@likun./lazy-img';
 ```
-
-### Lints and fixes files
+## Use in Vue
 ```
-npm run lint
+<lazy-img :src="imgSrc" width="300" height="200" />
 ```
-
+## Use in React
+```
+<lazy-img src={imgSrc} width="300" height="200" />
+```
