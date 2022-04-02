@@ -4,7 +4,7 @@
   "description": "custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -rf dest && tsc && cp ./src/web-components/package.json ./dest/package.json && cp ./src/web-components/README.md ./dest/README.md"
+    "build": "rm -rf dist && tsc"
   },
   "keywords": [
     "lazy-img",
