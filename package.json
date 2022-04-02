@@ -1,12 +1,13 @@
 {
   "name": "@likun./lazy-img",
   "version": "1.0.5",
-  "description": "custom element of image-lazy-loading based on web-components",
+  "description": "a custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc"
   },
   "keywords": [
+    "lazy",
     "lazy-img",
     "lazy-image",
     "lazyload",
