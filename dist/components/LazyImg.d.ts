@@ -7,6 +7,7 @@ declare class LazyImg extends HTMLElement {
     attributeChangedCallback(name: any, oldVal: any, newVal: any): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
-    setImgSrc: () => void;
+    setImgSrc: any;
+    removeScrollListener: () => void;
 }
 export default LazyImg;

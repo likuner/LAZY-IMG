@@ -19,9 +19,11 @@ import '@likun./lazy-img';
 ```
 ## Use in Vue
 ```
-<lazy-img :src="imgSrc" width="300" height="200" />
+<lazy-img :src="imgSrc" width="50%" height="200px" alt="this is a lazy img" />
 ```
 ## Use in React
 ```
-<lazy-img src={imgSrc} width="300" height="200" />
+<lazy-img src={imgSrc} width="300" height="200" alt="this is a lazy img"/>
 ```
+## Note
+- width and height can be `string`, `number` and `percentage`.
