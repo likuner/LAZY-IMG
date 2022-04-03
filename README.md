@@ -62,7 +62,7 @@ function LazyDemo() {
   )
 }
 
-export default App
+export default LazyDemo
 ```
 ## Note
 
