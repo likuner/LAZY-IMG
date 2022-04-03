@@ -1,29 +1,44 @@
 # Introduction
 `lazy-img`
 
-- a custom element of lazy image loading based on web components.
+- A custom element of lazy-image-loading based on web-components.
 - It can be used in both Vue and React.
-# Download
-## yarn
-```
-yarn add @likun./lazy-img
-```
+# Installing
 ## npm
 ```
 npm install @likun./lazy-img
 ```
+## yarn
+```
+yarn add @likun./lazy-img
+```
 # Usage
-## import package
+## Importing package
 ```
 import '@likun./lazy-img';
 ```
 ## Use in Vue
-```
-<lazy-img :src="imgSrc" width="50%" height="200px" alt="this is a lazy img" />
+```vue
+<lazy-img
+  :src="imgSrc"
+  width="50%"
+  height="200px"
+  @lazyload="handleLoad"
+  @lazyerror="handleError"
+/>
 ```
 ## Use in React
-```
-<lazy-img src={imgSrc} width="300" height="200" alt="this is a lazy img"/>
+```jsx
+<lazy-img
+  src={imgSrc}
+  width={300}
+  height="200"
+  onLazyload={handleLoad}
+  onLazyerror={handleError}
+/>
 ```
 ## Note
-- width and height can be `string`, `number` and `percentage`.
+
+- Attribute `width` & `height` can be _string_, _number_, and _percentage_.
+- Event `lazyload` is triggered when image is loaded successfully.
+- Event `lazyerror` is triggered when image loading failed.

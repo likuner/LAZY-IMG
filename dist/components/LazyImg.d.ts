@@ -8,6 +8,8 @@ declare class LazyImg extends HTMLElement {
     connectedCallback(): void;
     disconnectedCallback(): void;
     setImgSrc: any;
+    handleLoad: (e: any) => void;
+    handleError: (e: any) => void;
     removeScrollListener: () => void;
 }
 export default LazyImg;

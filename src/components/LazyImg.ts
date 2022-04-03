@@ -43,12 +43,18 @@ class LazyImg extends HTMLElement {
       this.style.setProperty('width', '300px')
       this.style.setProperty('height', '200px')
     }
+    this.img.onload = this.handleLoad
+    this.img.onerror = this.handleError
     this.setImgSrc()
     window.addEventListener('scroll', this.setImgSrc)
   }
 
   disconnectedCallback() {
-    if(!this.loaded) this.removeScrollListener()
+    if(!this.loaded) {
+      this.removeScrollListener()
+    }
+    this.img.onload = null
+    this.img.onerror = null
   }
 
   setImgSrc = throttle(() => {
@@ -57,11 +63,32 @@ class LazyImg extends HTMLElement {
     if(top < window.innerHeight) {
       this.img.setAttribute('src', this.getAttribute('src'))
       this.shadow.appendChild(this.img)
-      console.log('lazy-img-loaded')
       this.loaded = true
       this.removeScrollListener()
     }
   }, 200, { leading: true })
+
+  handleLoad = (e) => {
+    this.dispatchEvent(new CustomEvent('lazyload', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        target: this,
+        src: this.getAttribute('src')
+      }
+    }))
+  }
+
+  handleError = (e) => {
+    this.dispatchEvent(new CustomEvent('lazyerror', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        target: this,
+        src: this.getAttribute('src')
+      }
+    }))
+  }
 
   removeScrollListener = () => {
     window.removeEventListener('scroll', this.setImgSrc)
