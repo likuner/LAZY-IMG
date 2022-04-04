@@ -57,7 +57,6 @@ class LazyImg extends HTMLElement {
   }
 
   setImgSrc = throttle(() => {
-    console.log('throttle')
     if(this.loaded) return
     const { top } = this.getBoundingClientRect()
     if(top < window.innerHeight) {

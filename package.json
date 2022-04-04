@@ -4,10 +4,7 @@
   "description": "a custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc --build ./tsconfig.json",
-    "major": "npm version major",
-    "minor": "npm version minor",
-    "patch": "npm version patch"
+    "build": "rm -rf dist && tsc --build ./tsconfig.json"
   },
   "keywords": [
     "lazy",
