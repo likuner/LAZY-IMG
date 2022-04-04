@@ -1,5 +1,4 @@
-import { throttle } from 'lodash'
-import { getValWithUnit } from '../utils'
+import { getValWithUnit, throttle } from '../utils'
 
 class LazyImg extends HTMLElement {
   private shadow: ShadowRoot;
@@ -45,8 +44,8 @@ class LazyImg extends HTMLElement {
     }
     this.img.onload = this.handleLoad
     this.img.onerror = this.handleError
-    this.setImgSrc()
     window.addEventListener('scroll', this.setImgSrc)
+    this.setImgSrc()
   }
 
   disconnectedCallback() {
@@ -58,6 +57,7 @@ class LazyImg extends HTMLElement {
   }
 
   setImgSrc = throttle(() => {
+    console.log('throttle')
     if(this.loaded) return
     const { top } = this.getBoundingClientRect()
     if(top < window.innerHeight) {
@@ -66,7 +66,7 @@ class LazyImg extends HTMLElement {
       this.loaded = true
       this.removeScrollListener()
     }
-  }, 200, { leading: true })
+  }, 200)
 
   handleLoad = (e) => {
     this.dispatchEvent(new CustomEvent('lazyload', {

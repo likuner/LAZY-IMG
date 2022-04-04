@@ -1,10 +1,10 @@
 {
   "name": "@likun./lazy-img",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "a custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc --build ./tsconfig.json",
     "major": "npm version major",
     "minor": "npm version minor",
     "patch": "npm version patch"
@@ -24,9 +24,6 @@
   },
   "bugs": {
     "url": "https://github.com/likuner/LAZY-IMG/issues"
-  },
-  "dependencies": {
-    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "ts-node": "^10.7.0",

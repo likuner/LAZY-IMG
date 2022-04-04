@@ -1,10 +1,12 @@
-import { throttle } from 'lodash';
-import { getValWithUnit } from '../utils';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils");
 class LazyImg extends HTMLElement {
     constructor() {
         super();
         this.loaded = false;
-        this.setImgSrc = throttle(() => {
+        this.setImgSrc = (0, utils_1.throttle)(() => {
+            console.log('throttle');
             if (this.loaded)
                 return;
             const { top } = this.getBoundingClientRect();
@@ -14,7 +16,7 @@ class LazyImg extends HTMLElement {
                 this.loaded = true;
                 this.removeScrollListener();
             }
-        }, 200, { leading: true });
+        }, 200, false);
         this.handleLoad = (e) => {
             this.dispatchEvent(new CustomEvent('lazyload', {
                 bubbles: true,
@@ -62,7 +64,7 @@ class LazyImg extends HTMLElement {
                 this.img.setAttribute(name, newVal);
             }
             else {
-                this.style.setProperty(name, getValWithUnit(newVal));
+                this.style.setProperty(name, (0, utils_1.getValWithUnit)(newVal));
             }
         }
     }
@@ -73,8 +75,8 @@ class LazyImg extends HTMLElement {
         }
         this.img.onload = this.handleLoad;
         this.img.onerror = this.handleError;
-        this.setImgSrc();
         window.addEventListener('scroll', this.setImgSrc);
+        this.setImgSrc();
     }
     disconnectedCallback() {
         if (!this.loaded) {
@@ -85,4 +87,4 @@ class LazyImg extends HTMLElement {
     }
 }
 LazyImg.observedAttributes = ['src', 'alt', 'width', 'height'];
-export default LazyImg;
+exports.default = LazyImg;
