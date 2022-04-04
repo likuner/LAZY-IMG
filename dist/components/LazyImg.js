@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = require("lodash");
-const utils_1 = require("../utils");
+import { throttle } from 'lodash';
+import { getValWithUnit } from '../utils';
 class LazyImg extends HTMLElement {
     constructor() {
         super();
         this.loaded = false;
-        this.setImgSrc = (0, lodash_1.throttle)(() => {
+        this.setImgSrc = throttle(() => {
             if (this.loaded)
                 return;
             const { top } = this.getBoundingClientRect();
@@ -64,7 +62,7 @@ class LazyImg extends HTMLElement {
                 this.img.setAttribute(name, newVal);
             }
             else {
-                this.style.setProperty(name, (0, utils_1.getValWithUnit)(newVal));
+                this.style.setProperty(name, getValWithUnit(newVal));
             }
         }
     }
@@ -87,4 +85,4 @@ class LazyImg extends HTMLElement {
     }
 }
 LazyImg.observedAttributes = ['src', 'alt', 'width', 'height'];
-exports.default = LazyImg;
+export default LazyImg;

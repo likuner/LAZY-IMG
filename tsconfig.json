@@ -2,7 +2,8 @@
   "compilerOptions": {
     "isolatedModules": true,
     "target": "es2017",
-    "module": "commonjs",
+    "module": "es2015",
+    "moduleResolution": "node",
     "noImplicitAny": false,
     "declaration": true,
     "outDir": "./dist",
@@ -13,8 +14,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",
