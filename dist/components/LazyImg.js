@@ -6,7 +6,6 @@ class LazyImg extends HTMLElement {
         super();
         this.loaded = false;
         this.setImgSrc = (0, utils_1.throttle)(() => {
-            console.log('throttle');
             if (this.loaded)
                 return;
             const { top } = this.getBoundingClientRect();
@@ -16,7 +15,7 @@ class LazyImg extends HTMLElement {
                 this.loaded = true;
                 this.removeScrollListener();
             }
-        }, 200, false);
+        }, 200);
         this.handleLoad = (e) => {
             this.dispatchEvent(new CustomEvent('lazyload', {
                 bubbles: true,
