@@ -10,11 +10,12 @@ module.exports = {
     },
     clean: true
   },
+  mode: 'production',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')
     },
-    extensions: ['', '.webpack.js', '.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   module: {
     rules: [

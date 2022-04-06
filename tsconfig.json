@@ -8,6 +8,10 @@
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "importHelpers": false,
     "strict": false,
     "allowJs": true,

@@ -1,4 +1,4 @@
-import { getValWithUnit, throttle } from '../utils'
+import { getValWithUnit, throttle } from '@/utils'
 
 class LazyImg extends HTMLElement {
   private shadow: ShadowRoot;

@@ -1,5 +1,5 @@
 
-import LazyImg from './components/LazyImg'
+import LazyImg from '@/components/LazyImg'
 
 customElements.define('lazy-img', LazyImg)
 

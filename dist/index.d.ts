@@ -1,2 +1,2 @@
-import LazyImg from './components/LazyImg';
+import LazyImg from '@/components/LazyImg';
 export { LazyImg };
