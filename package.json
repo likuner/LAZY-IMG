@@ -1,6 +1,6 @@
 {
   "name": "@likun./lazy-img",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "a custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
