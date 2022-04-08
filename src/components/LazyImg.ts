@@ -11,7 +11,7 @@ class LazyImg extends HTMLElement {
     this.shadow.innerHTML = `
       <style>
         :host{
-          display: inline-block;
+          display: inline-flex;
           background: #F5F7FA;
         }
         img{
