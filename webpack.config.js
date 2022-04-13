@@ -6,8 +6,10 @@ module.exports = {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
     library: {
+      name: 'LazyImgEntry',
       type: 'umd'
     },
+    globalObject: 'globalThis',
     clean: true
   },
   mode: 'production',
@@ -21,5 +23,10 @@ module.exports = {
     rules: [
       { test: /\.tsx?$/, loader: 'ts-loader' }
     ]
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
   }
 }
