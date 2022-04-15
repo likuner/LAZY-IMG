@@ -4,8 +4,11 @@
   "description": "a custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "npx webpack",
-    "build:dev": "npx webpack --mode development"
+    "build": "webpack",
+    "build:dev": "webpack --mode development",
+    "release":"npm run release:patch",
+    "release:patch": "npm version patch && npm publish --access=public",
+    "release:minor": "npm version minor && npm publish --access=public"
   },
   "keywords": [
     "lazy",

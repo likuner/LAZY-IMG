@@ -21,18 +21,22 @@ class LazyImg extends HTMLElement {
       </style>
     `
     this.img = document.createElement('img')
+    this.img.setAttribute('alt', ' ') // remove default border
+    this.shadow.appendChild(this.img)
   }
 
-  static observedAttributes = ['src', 'alt', 'width', 'height']
+  static observedAttributes = ['src', 'alt', 'presrc', 'width', 'height']
   
   attributeChangedCallback(name, oldVal, newVal) {
     if(oldVal !== newVal) {
-      if(name === 'src') {
-        this.loaded && this.img.setAttribute(name, newVal)
-      } else if(name === 'alt') {
-        this.img.setAttribute(name, newVal)
-      } else {
+      if(['width', 'height'].includes(name)) {
         this.style.setProperty(name, getValWithUnit(newVal))
+      } else if(name === 'src') {
+        this.loaded && this.img.setAttribute(name, newVal)
+      } else if(name === 'presrc') {
+        !this.loaded && this.img.setAttribute(name, newVal)
+      } else {
+        this.img.setAttribute(name, newVal)
       }
     }
   }
@@ -44,31 +48,75 @@ class LazyImg extends HTMLElement {
     }
     this.img.onload = this.handleLoad
     this.img.onerror = this.handleError
-    window.addEventListener('scroll', this.setImgSrc)
-    this.setImgSrc()
+    // add pre-image if lazy-img is initially not in viewport
+    if(!this.isInViewport && this.hasAttribute('presrc')) {
+      this.img.setAttribute('src', this.getAttribute('presrc'))
+    }
+    // prefer IntersectionObserver to binding scroll event
+    if(this.isSupportIntersectionObserver) {
+      this.createIntersectionObserver()
+    } else {
+      window.addEventListener('scroll', this.setImgSrc)
+      this.setImgSrc()
+    }
   }
 
   disconnectedCallback() {
-    if(!this.loaded) {
+    if(!this.loaded && !this.isSupportIntersectionObserver) {
       this.removeScrollListener()
     }
     this.img.onload = null
     this.img.onerror = null
   }
 
+  // whether element is in viewport
+  get isInViewport() {
+    const vWidth = window.innerWidth || document.documentElement.clientWidth
+    const vHeight = window.innerHeight || document.documentElement.clientHeight
+    const { top, bottom, left, right } = this.getBoundingClientRect()
+    return !( top > vHeight || bottom < 0 || left > vWidth || right < 0 )
+  }
+
+  // whether browser support IntersectionObserver & IntersectionObserverEntry API?
+  get isSupportIntersectionObserver() {
+    return [IntersectionObserver, IntersectionObserverEntry]
+      .map(fn => typeof fn).every(type => type === 'function')
+  }
+
   setImgSrc = throttle(() => {
     if(this.loaded) return
-    const { top } = this.getBoundingClientRect()
-    if(top < window.innerHeight) {
+    if(this.isInViewport) {
       this.img.setAttribute('src', this.getAttribute('src'))
-      this.shadow.appendChild(this.img)
+      // this.shadow.appendChild(this.img)
       this.loaded = true
       this.removeScrollListener()
     }
-  }, 200)
+  }, 300)
 
-  handleLoad = (e) => {
-    this.dispatchEvent(new CustomEvent('lazyload', {
+  createIntersectionObserver = () => {
+    if(!this.isSupportIntersectionObserver) return
+    const handleObserver = (
+      [entry]: IntersectionObserverEntry[],
+      observer: IntersectionObserver
+    ) => {
+      // console.log('handleObserver', entries, observer)
+      if(!this.loaded && entry && entry.isIntersecting) {
+        this.img.setAttribute('src', this.getAttribute('src'))
+        // this.shadow.appendChild(this.img)
+        this.loaded = true
+      }
+    }
+    const options = {
+      root: null, // viewport
+      rootMargin: '0px',
+      threshold: 0 // threshold can be also a array, such as [0, 0.2, 0.4, 0.6, 0.8, 1]
+    }
+    const observer: IntersectionObserver = new IntersectionObserver(handleObserver, options)
+    observer.observe(this)
+  }
+
+  handleEmit = (eventName: string) => {
+    this.dispatchEvent(new CustomEvent(eventName, {
       bubbles: true,
       composed: true,
       detail: {
@@ -78,15 +126,12 @@ class LazyImg extends HTMLElement {
     }))
   }
 
-  handleError = (e) => {
-    this.dispatchEvent(new CustomEvent('lazyerror', {
-      bubbles: true,
-      composed: true,
-      detail: {
-        target: this,
-        src: this.getAttribute('src')
-      }
-    }))
+  handleLoad = () => {
+    this.handleEmit('lazyload')
+  }
+
+  handleError = () => {
+    this.handleEmit('lazyerror')
   }
 
   removeScrollListener = () => {

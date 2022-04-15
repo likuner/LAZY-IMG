@@ -92,6 +92,7 @@ export default LazyDemo
 ## Note
 
 - attribute `width` & `height` can be _string_, _number_, and _percentage_.
-- attribute `alt` defines an alternate text description of the image.
+- attribute `presrc` is a url of space occupying image.
+- attribute `alt` is an alternate text description of the image.
 - event `lazyload` is triggered when image is loaded successfully.
 - event `lazyerror` is triggered when image loading failed.
