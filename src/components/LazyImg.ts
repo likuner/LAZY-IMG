@@ -69,7 +69,7 @@ class LazyImg extends HTMLElement {
     this.img.onerror = null
   }
 
-  // whether element is in viewport
+  // whether element is in viewport?
   get isInViewport() {
     const vWidth = window.innerWidth || document.documentElement.clientWidth
     const vHeight = window.innerHeight || document.documentElement.clientHeight
@@ -99,7 +99,6 @@ class LazyImg extends HTMLElement {
       [entry]: IntersectionObserverEntry[],
       observer: IntersectionObserver
     ) => {
-      // console.log('handleObserver', entries, observer)
       if(!this.loaded && entry && entry.isIntersecting) {
         this.img.setAttribute('src', this.getAttribute('src'))
         // this.shadow.appendChild(this.img)
