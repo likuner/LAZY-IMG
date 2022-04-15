@@ -1,12 +1,12 @@
 {
   "name": "@likun./lazy-img",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "a custom element of image-lazy-loading based on web-components",
   "main": "./dist/index.js",
   "scripts": {
     "build": "webpack",
     "build:dev": "webpack --mode development",
-    "release":"npm run release:patch",
+    "release": "npm run release:patch",
     "release:patch": "npm version patch && npm publish --access=public",
     "release:minor": "npm version minor && npm publish --access=public"
   },
