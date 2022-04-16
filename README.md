@@ -8,7 +8,7 @@
 ## CDN
 
 - you can get `lazy-img` through CDN.
-- you can add `@+version`** **after `/lazy-img` if you need to load the specified version.
+- you can add `@+version` after `/lazy-img` if you need to load the specified version.
 ```html
 <script src="https://unpkg.com/@likun./lazy-img/dist/index.js"></script>
 ```
