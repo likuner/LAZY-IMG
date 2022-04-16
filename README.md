@@ -1,14 +1,14 @@
 # Introduction
 `lazy-img`
 
-- a custom element of lazy-image-loading based on web-components.
+- a custom element of lazy-load-image based on web-components.
 - it can be used in both `vue` & `react` projects.
 - it can also be used in native `html`.
-# Installing
+# Installing 🛠
 ## CDN
 
 - you can get `lazy-img` through CDN.
-- you can add `@+version` after `/lazy-img` if you need to load the specified version.
+- you can add `@+version`** **after `/lazy-img` if you need to load the specified version.
 ```html
 <script src="https://unpkg.com/@likun./lazy-img/dist/index.js"></script>
 ```
@@ -43,6 +43,8 @@ yarn add @likun./lazy-img
 import '@likun./lazy-img'
 ```
 ### Use in Vue
+
+- learn more: [Vue and Web Components](https://vuejs.org/guide/extras/web-components.html) and [🇨🇳中文](https://v3.cn.vuejs.org/guide/web-components.html).
 ```vue
 <lazy-img
   :src="imgSrc"
@@ -54,10 +56,12 @@ import '@likun./lazy-img'
 ```
 ### Use in React
 
-- className is not valid in lazy-img, may be the reason there is "-" in the name. However, the name of the custom element of web-components must contain "-".
-- event listeners that need special handling of lazyload & lazyerror in react，the following example：
+- learn more: [Using Web Components in React](https://reactjs.org/docs/web-components.html) and [🇨🇳中文](https://zh-hans.reactjs.org/docs/web-components.html).
+- **className** will be resolved to **classname**, but you can use `class` directly.
+- events triggered by web components may not be delivered correctly through the react rendering tree, you need to manually add event handlers in the react component to handle these events, the following example:
 ```jsx
 import { useState, useRef, useEffect } from 'react'
+import styles from './LazyDemo.module.less'
 
 function LazyDemo() {
   const lazyRef = useRef()
@@ -83,16 +87,25 @@ function LazyDemo() {
       src={imgSrc}
       width="300px"
       height="200px"
+      // class can be used here
+      class={styles.lazyImage}
     />
   )
 }
 
 export default LazyDemo
 ```
-## Note
+## Attributes
+| **Parameter** | **Explanation** | **Type** | **Defalut value** |
+| --- | --- | --- | --- |
+| src | url of image | string |  |
+| presrc | url of space occupying image when lazy | string |  |
+| width | width of image | number &#124; string &#124; percentage | 300px |
+| height | height of image | number &#124; string &#124; percentage | 200px |
+| alt | alternate text description of the image when failed | string |  |
 
-- attribute `width` & `height` can be _string_, _number_, and _percentage_.
-- attribute `presrc` is a url of space occupying image.
-- attribute `alt` is an alternate text description of the image.
-- event `lazyload` is triggered when image is loaded successfully.
-- event `lazyerror` is triggered when image loading failed.
+## Events
+| **Name** | **Explanation** | **Callback arguments** |
+| --- | --- | --- |
+| lazyload | triggered when image is loaded successfully | event |
+| lazyerror | triggered when image loading failed | event |

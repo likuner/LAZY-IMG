@@ -108,7 +108,7 @@ class LazyImg extends HTMLElement {
     const options = {
       root: null, // viewport
       rootMargin: '0px',
-      threshold: 0 // threshold can be also a array, such as [0, 0.2, 0.4, 0.6, 0.8, 1]
+      threshold: 0 // threshold can be also array type, such as [0, 0.2, 0.4, 0.6, 0.8, 1]
     }
     const observer: IntersectionObserver = new IntersectionObserver(handleObserver, options)
     observer.observe(this)
