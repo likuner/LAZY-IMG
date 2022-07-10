@@ -1,9 +1,10 @@
-import { getValWithUnit, throttle } from '@/utils'
+import { getValWithUnit } from '@/utils'
 
 class LazyImg extends HTMLElement {
   private shadow: ShadowRoot;
   private img: HTMLImageElement;
-  private loaded: boolean = false;
+  private done: boolean = false;
+  private observer: IntersectionObserver;
 
   constructor() {
     super()
@@ -25,16 +26,18 @@ class LazyImg extends HTMLElement {
     this.shadow.appendChild(this.img)
   }
 
-  static observedAttributes = ['src', 'alt', 'presrc', 'width', 'height']
+  static observedAttributes = ['src', 'alt', 'presrc', 'width', 'height', 'scroll-element']
   
   attributeChangedCallback(name, oldVal, newVal) {
     if(oldVal !== newVal) {
       if(['width', 'height'].includes(name)) {
         this.style.setProperty(name, getValWithUnit(newVal))
       } else if(name === 'src') {
-        this.loaded && this.img.setAttribute(name, newVal)
+        this.done && this.img.setAttribute(name, newVal)
       } else if(name === 'presrc') {
-        !this.loaded && this.img.setAttribute(name, newVal)
+        !this.done && this.img.setAttribute(name, newVal)
+      } else if (name === 'scroll-element') {
+        this.init()
       } else {
         this.img.setAttribute(name, newVal)
       }
@@ -42,31 +45,27 @@ class LazyImg extends HTMLElement {
   }
   
   connectedCallback() {
+    this.init()
+  }
+
+  disconnectedCallback() {
+    this.img.onload = null
+    this.img.onerror = null
+  }
+
+  private init() {
     if(!this.hasAttribute('width') && !this.hasAttribute('height')) {
       this.style.setProperty('width', '300px')
       this.style.setProperty('height', '200px')
     }
     this.img.onload = this.handleLoad
     this.img.onerror = this.handleError
-    // add pre-image if lazy-img is initially not in viewport
-    if(!this.isInViewport && this.hasAttribute('presrc')) {
-      this.img.setAttribute('src', this.getAttribute('presrc'))
-    }
-    // prefer IntersectionObserver to binding scroll event
-    if(this.isSupportIntersectionObserver) {
-      this.createIntersectionObserver()
-    } else {
-      window.addEventListener('scroll', this.setImgSrc)
-      this.setImgSrc()
-    }
-  }
-
-  disconnectedCallback() {
-    if(!this.loaded && !this.isSupportIntersectionObserver) {
-      this.removeScrollListener()
-    }
-    this.img.onload = null
-    this.img.onerror = null
+    this.createIntersectionObserver()
+    Promise.resolve().then(() => {
+      if(!this.done && this.hasAttribute('presrc')) {
+        this.img.setAttribute('src', this.getAttribute('presrc'))
+      }
+    })
   }
 
   // whether element is in viewport?
@@ -83,35 +82,35 @@ class LazyImg extends HTMLElement {
       .map(fn => typeof fn).every(type => type === 'function')
   }
 
-  setImgSrc = throttle(() => {
-    if(this.loaded) return
-    if(this.isInViewport) {
-      this.img.setAttribute('src', this.getAttribute('src'))
-      // this.shadow.appendChild(this.img)
-      this.loaded = true
-      this.removeScrollListener()
-    }
-  }, 300)
-
   createIntersectionObserver = () => {
-    if(!this.isSupportIntersectionObserver) return
-    const handleObserver = (
-      [entry]: IntersectionObserverEntry[],
-      observer: IntersectionObserver
-    ) => {
-      if(!this.loaded && entry && entry.isIntersecting) {
+    if(!this.isSupportIntersectionObserver) {
+      throw new Error('The current environment does not support IntersectionObserver API.')
+    }
+
+    this.observer && this.observer.unobserve(this)
+
+    const handleObserver = ([entry]: IntersectionObserverEntry[]) => {
+      if(!this.done && entry && entry.isIntersecting) {
         this.img.setAttribute('src', this.getAttribute('src'))
         // this.shadow.appendChild(this.img)
-        this.loaded = true
+        this.done = true
+        this.observer && this.observer.unobserve(this)
       }
     }
+    
+    let rootEl = null
+    if (this.hasAttribute('scroll-element')) {
+      const selector = this.getAttribute('scroll-element')
+      rootEl = typeof selector === 'string' ? document.querySelector(selector) : selector
+    }
     const options = {
-      root: null, // viewport
+      root: rootEl, // be viewport if null
       rootMargin: '0px',
       threshold: 0 // threshold can be also array type, such as [0, 0.2, 0.4, 0.6, 0.8, 1]
     }
-    const observer: IntersectionObserver = new IntersectionObserver(handleObserver, options)
-    observer.observe(this)
+
+    this.observer = new IntersectionObserver(handleObserver, options)
+    this.observer.observe(this)
   }
 
   handleEmit = (eventName: string) => {
@@ -131,10 +130,6 @@ class LazyImg extends HTMLElement {
 
   handleError = () => {
     this.handleEmit('lazyerror')
-  }
-
-  removeScrollListener = () => {
-    window.removeEventListener('scroll', this.setImgSrc)
   }
   
 }
